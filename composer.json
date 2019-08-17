@@ -1,0 +1,17 @@
+{
+    "name": "framesnpictures/laravel-module",
+    "description": "Laravel Module Helper",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Chris Cynarski",
+            "email": "chris@cynarski.net"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Fnp\\Module\\": "src/"
+        }
+    }
+}
