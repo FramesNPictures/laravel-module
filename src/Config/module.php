@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'path' =>  resource_path('module'),
+    'path' =>  resource_path('modules'),
 ];

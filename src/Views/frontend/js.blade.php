@@ -1,15 +1,27 @@
 <?php
-/** @var $definition Fnp\Module\Frontend\FrontendModuleDefinition **/
+/** @var $definition Fnp\Module\Frontend\FrontendModuleDefinition * */
 ?>
 
-// {{ ucfirst($definition->getName()) }} Javascript
-
-@if ($definition->getVueRootElement())
-@include('fnp-module::frontend.vue')
+@if($definition->getBuildInfo('axios'))
+require('{{'./'.$definition->getModuleFileName('axios.js')}}');
 @endif
 
-// JS includes
-@foreach($definition->getJs() as $path)
-require('{{$path}}');
-@endforeach
+@if($definition->getBuildInfo('bootstrap'))
+require('{{'./'.$definition->getModuleFileName('bootstrap.js')}}');
+@endif
 
+@if($definition->getBuildInfo('vue'))
+window.Vue = require('vue');
+@endif
+
+@if($definition->getBuildInfo('components'))
+require('{{'./'.$definition->getModuleFileName('components.js')}}');
+@endif
+
+@if($definition->getBuildInfo('vue'))
+require('{{'./'.$definition->getModuleFileName('vue.js')}}');
+@endif
+
+@foreach($definition->getJs() as $path)
+require('{{$definition->relative($path)}}');
+@endforeach

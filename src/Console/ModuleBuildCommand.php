@@ -67,20 +67,9 @@ class ModuleBuildCommand extends Command
 
     protected function buildFolder()
     {
-        $buildFolder = resource_path('module');
-
-        if (!file_exists($buildFolder)) {
+        if (!file_exists($this->modulePath)) {
             $this->info('Creating module resource folder...');
-            mkdir($buildFolder);
-        }
-
-        if (!file_exists($buildFolder . '/.gitignore')) {
-            $this->info('Creating gitignore file...');
-
-            file_put_contents(
-                $buildFolder . '/.gitignore',
-                '!.gitignore' . PHP_EOL . '*'
-            );
+            mkdir($this->modulePath);
         }
     }
 
@@ -121,48 +110,24 @@ class ModuleBuildCommand extends Command
     {
         Dumper::dump($definition->getName(), 'M');
 
-        if ($definition->getVueRootElement() ||
-            $definition->getVueComponents() ||
-            count($definition->getJs())) {
-            $definition->setBuildInfo('hasJs', TRUE);
-            $this->buildJs($definition);
-        }
-
-        if (count($definition->getCss()) || count($definition->getSass())) {
-            $definition->setBuildInfo('hasCss', TRUE);
-            $this->buildCss($definition);
-        }
-
-        $this->buildMix();
+        $this->build('bootstrap', 'bootstrap', 'js', $definition);
+        $this->build('axios', 'axios', 'js', $definition);
+        $this->build('vue', 'vue', 'js', $definition);
+        $this->build('components', 'components', 'js', $definition);
+        $this->build('js', 'js', 'js', $definition);
+        $this->build('css', 'css', 'scss', $definition);
+        // $this->build(NULL, 'mix', 'js', $definition);
     }
 
-    protected function buildCss(FrontendModuleDefinition $definition)
+    protected function build($check, $name, $extension, FrontendModuleDefinition $definition)
     {
-        $content = View::make('fnp-module::frontend.css', compact('definition'));
+        if ($check && !$definition->getBuildInfo($check))
+            return;
+
+        $content = View::make('fnp-module::frontend.' . $name, compact('definition'));
 
         $this->frontendFiles->put(
-            $definition->getTargetModuleFilePath('sass'),
-            $content->render()
-        );
-    }
-
-    protected function buildMix()
-    {
-        $definitions = $this->frontendModules;
-        $filename    = $this->modulePath . '/mix.js';
-
-        $this->frontendFiles->put(
-            $filename,
-            View::make('fnp-module::frontend.mix', compact('definitions'))->render()
-        );
-    }
-
-    protected function buildJs(FrontendModuleDefinition $definition)
-    {
-        $content = View::make('fnp-module::frontend.js', compact('definition'));
-
-        $this->frontendFiles->put(
-            $definition->getTargetModuleFilePath('js'),
+            $definition->getTargetModuleFilePath($name . '.' . $extension),
             $content->render()
         );
     }

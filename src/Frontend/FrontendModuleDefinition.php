@@ -59,9 +59,25 @@ class FrontendModuleDefinition
         return Arr::get($this->buildInfo, $key, $default);
     }
 
-    public function setBuildInfo($key, $value)
+    public function addBuildInfo($key, $value = TRUE)
     {
         Arr::set($this->buildInfo, $key, $value);
+    }
+
+    public function useAxios()
+    {
+        $this->addBuildInfo('axios');
+        $this->addBuildInfo('js');
+
+        return $this;
+    }
+
+    public function useBootstrap()
+    {
+        $this->addBuildInfo('bootstrap');
+        $this->addBuildInfo('js');
+
+        return $this;
     }
 
     public function merge(FrontendModuleDefinition $definition)
@@ -100,6 +116,9 @@ class FrontendModuleDefinition
 
     public function setVueRootElement($element): FrontendModuleDefinition
     {
+        $this->addBuildInfo('vue');
+        $this->addBuildInfo('js');
+
         $this->vueRootElement = $element;
 
         return $this;
@@ -107,6 +126,9 @@ class FrontendModuleDefinition
 
     public function addVueData($key, $value = NULL): FrontendModuleDefinition
     {
+        $this->addBuildInfo('vue-data');
+        $this->addBuildInfo('js');
+
         $this->vueData[ $key ] = $value;
 
         return $this;
@@ -114,6 +136,9 @@ class FrontendModuleDefinition
 
     public function addVueComponent($name, $path): FrontendModuleDefinition
     {
+        $this->addBuildInfo('components');
+        $this->addBuildInfo('js');
+
         $this->vueComponents[ $name ] = $path;
 
         return $this;
@@ -121,6 +146,8 @@ class FrontendModuleDefinition
 
     public function addJs($path): FrontendModuleDefinition
     {
+        $this->addBuildInfo('js');
+
         $this->js[] = $path;
 
         return $this;
@@ -128,6 +155,8 @@ class FrontendModuleDefinition
 
     public function addCss($path): FrontendModuleDefinition
     {
+        $this->addBuildInfo('css');
+
         $this->css[] = $path;
 
         return $this;
@@ -135,6 +164,9 @@ class FrontendModuleDefinition
 
     public function addSass($path): FrontendModuleDefinition
     {
+        $this->addBuildInfo('sass');
+        $this->addBuildInfo('css');
+
         $this->sass[] = $path;
 
         return $this;
@@ -142,6 +174,8 @@ class FrontendModuleDefinition
 
     public function addLess($path): FrontendModuleDefinition
     {
+        $this->addBuildInfo('less');
+
         $this->less[] = $path;
 
         return $this;
@@ -149,6 +183,8 @@ class FrontendModuleDefinition
 
     public function addImage($key, $path): FrontendModuleDefinition
     {
+        $this->addBuildInfo('images');
+
         $this->images[ $key ] = $path;
 
         return $this;
@@ -235,12 +271,22 @@ class FrontendModuleDefinition
 
     public function getTargetModuleFilePath($extension): string
     {
-        return Config::get('module.path.resource') .
+        return Config::get('module.path') .
                '/' . $this->getModuleFileName($extension);
     }
 
     public function getRelativeTargetModuleFilePath($extension): string
     {
         return '.' . str_replace(base_path(), '', $this->getTargetModuleFilePath($extension));
+    }
+
+    public function relative($filename): string
+    {
+        $rel = str_replace(base_path(), '', $filename);
+        $up  = str_replace(base_path(), '', Config::get('module.path'));
+        $up  = explode('/', $up);
+        $up  = str_repeat('../', count($up) - 1);
+
+        return str_replace('//', '/', $up . $rel);
     }
 }
