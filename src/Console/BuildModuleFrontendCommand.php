@@ -102,8 +102,6 @@ class BuildModuleFrontendCommand extends Command
 
     protected function buildFrontend(FrontendModuleDefinition $definition)
     {
-        Dumper::dump($definition->getName(), 'M');
-
         $this->build('bootstrap', 'bootstrap', 'js', $definition);
         $this->build('axios', 'axios', 'js', $definition);
         $this->build('vue', 'vue', 'js', $definition);
@@ -129,7 +127,6 @@ class BuildModuleFrontendCommand extends Command
     protected function dumpFiles()
     {
         foreach ($this->frontendFiles as $file => $content) {
-            Dumper::dump($file, '>');
             file_put_contents($file, $content);
         }
     }
