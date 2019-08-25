@@ -13,5 +13,12 @@
         "psr-4": {
             "Fnp\\Module\\": "src/"
         }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Barryvdh\\LaravelIdeHelper\\IdeHelperServiceProvider"
+            ]
+        }
     }
 }

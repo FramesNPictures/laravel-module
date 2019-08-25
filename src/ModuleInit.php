@@ -2,7 +2,9 @@
 
 namespace Fnp\Module;
 
-use Fnp\Module\Console\ModuleBuildCommand;
+use Fnp\Module\Console\BuildModuleFrontendCommand;
+use Fnp\Module\Console\BuildModulePersistenceCommand;
+use Fnp\Module\Console\BuildModulePhpUnitCommand;
 use Fnp\Module\Features\ModuleConfig;
 use Fnp\Module\Features\ModuleConsole;
 use Fnp\Module\Features\ModuleViews;
@@ -21,7 +23,9 @@ class ModuleInit extends ModuleProvider
     public function consoleCommands(): array
     {
         return [
-            ModuleBuildCommand::class,
+            BuildModuleFrontendCommand::class,
+            BuildModulePersistenceCommand::class,
+            BuildModulePhpUnitCommand::class,
         ];
     }
 

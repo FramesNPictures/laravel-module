@@ -2,7 +2,7 @@
 
 namespace Fnp\Module\Features;
 
-use Fnp\Module\Frontend\FrontendModuleDefinition;
+use Fnp\Module\Definitions\FrontendModuleDefinition;
 
 trait ModuleFrontend
 {
