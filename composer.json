@@ -8,7 +8,9 @@
             "email": "chris@cynarski.net"
         }
     ],
-    "require": {},
+    "require": {
+        "orchestra/testbench": "^3.8"
+    },
     "autoload": {
         "psr-4": {
             "Fnp\\Module\\": "src/"

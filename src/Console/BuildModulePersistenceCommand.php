@@ -2,7 +2,6 @@
 
 namespace Fnp\Module\Console;
 
-use Cni\Utils\Dumper;
 use Fnp\Module\ModuleProvider;
 use Fnp\Module\Services\ServiceProviderRepository;
 use Illuminate\Console\Command;
@@ -58,7 +57,7 @@ class BuildModulePersistenceCommand extends Command
     public function handle(ServiceProviderRepository $repository)
     {
         $this->sourceFolder = $this->option('src');
-        $providers = $repository->getModuleProviders();
+        $providers          = $repository->getModuleProviders();
 
         foreach ($providers as $provider)
             $this->processPersistence($provider);
@@ -71,7 +70,7 @@ class BuildModulePersistenceCommand extends Command
         if (!method_exists($provider, 'persistenceFolders'))
             return;
 
-        if (!class_exists(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class, TRUE))
+        if (!class_exists('Barryvdh\\LaravelIdeHelper\\IdeHelperServiceProvider', TRUE))
             return;
 
         $folders = $provider->persistenceFolders();
@@ -81,7 +80,6 @@ class BuildModulePersistenceCommand extends Command
 
             if ($this->sourceFolder && Str::startsWith($relativeFolder, $this->sourceFolder)) {
                 $cmd = 'ide-helper:models --write  --reset --dir="' . $relativeFolder . '"';
-                Dumper::dump($cmd);
                 Artisan::call($cmd);
             } else {
                 $this->persistencePaths->push($relativeFolder);
@@ -95,7 +93,6 @@ class BuildModulePersistenceCommand extends Command
 
         foreach ($this->persistencePaths as $folder) {
             $cmd .= ' --dir="' . $folder . '"';
-            Dumper::dump($folder, 'P');
         }
 
         Artisan::call($cmd);
