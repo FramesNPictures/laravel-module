@@ -19,7 +19,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Barryvdh\\LaravelIdeHelper\\IdeHelperServiceProvider"
+                "FNP\\Module\\ModuleInit"
             ]
         }
     }
