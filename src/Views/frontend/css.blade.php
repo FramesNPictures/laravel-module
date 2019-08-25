@@ -1,5 +1,5 @@
 <?php
-/** @var $definition Fnp\Module\Frontend\FrontendModuleDefinition * */
+/** @var $definition \Fnp\Module\Definitions\FrontendModuleDefinition * */
 ?>
 
 @foreach($definition->getCss() as $stylesheet)

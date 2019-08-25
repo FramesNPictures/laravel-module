@@ -1,5 +1,5 @@
 <?php
-/** @var $definitions Fnp\Module\Frontend\FrontendModuleDefinition[] * */
+/** @var $definitions \Fnp\Module\Definitions\FrontendModuleDefinition[] * */
 ?>
 // Module: {{ $definition->getName() }}
 

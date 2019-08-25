@@ -1,6 +1,6 @@
 <?php
 
-namespace Fnp\Module\Frontend;
+namespace Fnp\Module\Definitions;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Config;

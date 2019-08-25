@@ -16,6 +16,6 @@ trait ModuleAudit
     public function bootModuleAuditFeature()
     {
         foreach ($this->auditEvents() as $handle => $event)
-            AuditService::audit($handle, $event);
+            AuditService::audit($event, $handle);
     }
 }
