@@ -8,7 +8,7 @@
             "email": "chris@cynarski.net"
         }
     ],
-    "require": {
+    "require-dev": {
         "orchestra/testbench": "^3.8"
     },
     "autoload": {
@@ -19,7 +19,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "FNP\\Module\\ModuleInit"
+                "Fnp\\Module\\ModuleInit"
             ]
         }
     }
