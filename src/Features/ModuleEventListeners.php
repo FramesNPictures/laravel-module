@@ -3,7 +3,6 @@
 
 namespace Fnp\Module\Features;
 
-
 use Illuminate\Support\Facades\Event;
 
 trait ModuleEventListeners
