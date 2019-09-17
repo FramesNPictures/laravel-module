@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "framesnpictures/dto": "^0.*"
+        "framesnpictures/dto": "^0.5.7"
     },
     "require-dev": {
         "orchestra/testbench": "^3.8"
