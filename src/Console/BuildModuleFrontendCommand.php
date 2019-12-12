@@ -91,31 +91,29 @@ class BuildModuleFrontendCommand extends Command
         $definition = new FrontendModuleDefinition();
         $provider->frontend($definition);
 
-        if (!$this->frontendModules->has($definition->getName())) {
-            $this->frontendModules->put($definition->getName(), $definition);
+        if (!$this->frontendModules->has($definition->getHandle())) {
+            $this->frontendModules->put($definition->getHandle(), $definition);
         } else {
             /** @var FrontendModuleDefinition $existing */
-            $existing = $this->frontendModules->get($definition->getName());
+            $existing = $this->frontendModules->get($definition->getHandle());
             $existing->merge($definition);
         }
     }
 
     protected function buildFrontend(FrontendModuleDefinition $definition)
     {
-        $this->build('bootstrap', 'bootstrap', 'js', $definition);
-        $this->build('axios', 'axios', 'js', $definition);
-        $this->build('vue', 'vue', 'js', $definition);
-        $this->build('components', 'components', 'js', $definition);
-        $this->build('js', 'js', 'js', $definition);
-        $this->build('css', 'css', 'scss', $definition);
-        // $this->build(NULL, 'mix', 'js', $definition);
+        // $this->build('bootstrap', 'bootstrap', 'js', $definition);
+        // $this->build('axios', 'axios', 'js', $definition);
+        // $this->build('vue', 'vue', 'js', $definition);
+        // $this->build('components', 'components', 'js', $definition);
+        // $this->build('js', 'js', 'js', $definition);
+        // $this->build('css', 'css', 'scss', $definition);
+
+        $this->build('javascript', 'js', $definition);
     }
 
-    protected function build($check, $name, $extension, FrontendModuleDefinition $definition)
+    protected function build($name, $extension, FrontendModuleDefinition $definition)
     {
-        if ($check && !$definition->getBuildInfo($check))
-            return;
-
         $content = View::make('fnp-module::frontend.' . $name, compact('definition'));
 
         $this->frontendFiles->put(
