@@ -47,9 +47,6 @@ class FrontendModuleDefinition
 
     public function merge(FrontendModuleDefinition $definition)
     {
-        if ($definition->getVueRootElement())
-            $this->setVueRootElement($definition->getVueRootElement());
-
         foreach ($definition->getVueComponents() as $key => $value)
             $this->addVueComponent($key, $value);
 
