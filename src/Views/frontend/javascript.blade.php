@@ -24,17 +24,9 @@ function {{ $definition->getModuleMethodName('load','vueComponents') }}(vue) {
 @endif
 }
 
-function {{ $definition->getModuleMethodName('load','vueData') }}(vue) {
+function {{ $definition->getModuleMethodName('load','vueData') }}() {
 @if(count($definition->getVueData()))
-@foreach($definition->getVueData() as $key=>$value)
-@if(is_string($value))
-    vue.{{ $key }} = '{!! $value !!}';
-@elseif(is_numeric($value))
-    vue.{{ $key }} = {!! $value !!};
-@elseif(is_array($value))
-    vue.{{ $key }} = {!! json_encode($value) !!}
-@endif
-@endforeach
+    return {!! json_encode($definition->getVueData, JSON_PRETTY_PRINT) !!};
 @else
     // No Vue Data
 @endif
