@@ -26,7 +26,7 @@ function {{ $definition->getModuleMethodName('load','vueComponents') }}(vue) {
 
 function {{ $definition->getModuleMethodName('load','vueData') }}() {
 @if(count($definition->getVueData()))
-    return {!! json_encode($definition->getVueData, JSON_PRETTY_PRINT) !!};
+    return {!! json_encode($definition->getVueData(), JSON_PRETTY_PRINT) !!};
 @else
     // No Vue Data
 @endif
