@@ -110,6 +110,8 @@ class BuildModuleFrontendCommand extends Command
         // $this->build('css', 'css', 'scss', $definition);
 
         $this->build('javascript', 'js', $definition);
+        $this->build('less', 'less', $definition);
+        $this->build('sass', 'scss', $definition);
     }
 
     protected function build($name, $extension, FrontendModuleDefinition $definition)
