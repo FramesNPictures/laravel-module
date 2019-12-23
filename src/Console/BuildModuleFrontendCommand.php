@@ -2,7 +2,6 @@
 
 namespace Fnp\Module\Console;
 
-use Cni\Utils\Dumper;
 use Fnp\Module\Definitions\FrontendModuleDefinition;
 use Fnp\Module\ModuleProvider;
 use Fnp\Module\Services\ServiceProviderRepository;
@@ -41,11 +40,6 @@ class BuildModuleFrontendCommand extends Command
      */
     protected $modulePath;
 
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         parent::__construct();
@@ -54,11 +48,6 @@ class BuildModuleFrontendCommand extends Command
         $this->modulePath      = config('module.path', resource_path('module'));
     }
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
     public function handle(ServiceProviderRepository $repository)
     {
         $this->buildFolder();
@@ -102,13 +91,6 @@ class BuildModuleFrontendCommand extends Command
 
     protected function buildFrontend(FrontendModuleDefinition $definition)
     {
-        // $this->build('bootstrap', 'bootstrap', 'js', $definition);
-        // $this->build('axios', 'axios', 'js', $definition);
-        // $this->build('vue', 'vue', 'js', $definition);
-        // $this->build('components', 'components', 'js', $definition);
-        // $this->build('js', 'js', 'js', $definition);
-        // $this->build('css', 'css', 'scss', $definition);
-
         $this->build('javascript', 'js', $definition);
         $this->build('less', 'less', $definition);
         $this->build('sass', 'scss', $definition);
