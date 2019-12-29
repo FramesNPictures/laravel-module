@@ -4,7 +4,7 @@ namespace Fnp\Module\Console;
 
 use Fnp\Module\Definitions\FrontendModuleDefinition;
 use Fnp\Module\ModuleProvider;
-use Fnp\Module\Services\ServiceProviderRepository;
+use Fnp\Module\Services\ModuleService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\View;
@@ -48,7 +48,7 @@ class BuildModuleFrontendCommand extends Command
         $this->modulePath      = config('module.path', resource_path('module'));
     }
 
-    public function handle(ServiceProviderRepository $repository)
+    public function handle(ModuleService $repository)
     {
         $this->buildFolder();
 

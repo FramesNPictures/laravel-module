@@ -6,7 +6,7 @@ namespace Fnp\Module\Console;
 
 use Fnp\Module\Definitions\PhpUnitDefinition;
 use Fnp\Module\Features\ModulePhpUnit;
-use Fnp\Module\Services\ServiceProviderRepository;
+use Fnp\Module\Services\ModuleService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 
@@ -30,7 +30,7 @@ class BuildModulePhpUnitCommand extends Command
      */
     protected $description = 'Build Module Persistence IDE Helpers';
 
-    public function handle(ServiceProviderRepository $repository)
+    public function handle(ModuleService $repository)
     {
         $providers = $repository->getModuleProviders();
 
