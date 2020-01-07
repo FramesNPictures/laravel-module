@@ -66,7 +66,7 @@ class BuildModulePersistenceCommand extends Command
         foreach ($folders as $folder) {
             $relativeFolder = str_replace(base_path() . '/', '', $folder);
 
-            if (Str::startsWith($relativeFolder, [$sources])) {
+            if (Str::startsWith($relativeFolder, $sources)) {
                 $cmd = 'ide-helper:models --write  --reset --dir="' . $relativeFolder . '"';
                 Artisan::call($cmd);
             } else {
