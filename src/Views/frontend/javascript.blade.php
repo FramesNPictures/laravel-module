@@ -22,6 +22,17 @@ function {{ $definition->getModuleMethodName('load','vueData') }}() {
 @endif
 }
 
+function {{ $definition->getModuleMethodName('init','VueJS') }}(element) {
+    window.Vue = require('vue');
+
+    let v = new Vue({
+        el: element,
+        data: {{ $definition->getModuleMethodName('load','vueData') }},
+    });
+
+    return v;
+}
+
 function {{ $definition->getModuleMethodName('init','Axios') }}(csrfTokenMeta, authTokenMeta) {
     window.axios = require('axios');
     window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -55,6 +66,8 @@ function {{ $definition->getModuleMethodName('load','javaScript') }}() {
     // No Javascript Included
 @endif
 }
+
+{{ $definition->getModuleMethodName('load','javaScript') }}();
 
 
 
