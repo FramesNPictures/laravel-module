@@ -101,7 +101,7 @@ class BuildModuleFrontendCommand extends Command
         $content = View::make('fnp-module::frontend.' . $name, compact('definition'));
 
         $this->frontendFiles->put(
-            $definition->getTargetModuleFilePath($name . '.' . $extension),
+            $definition->getTargetModuleFilePath('.' . $extension),
             $content->render()
         );
     }
