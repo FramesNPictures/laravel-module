@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "php": ">=7.2",
+        "php": ">=7.1",
         "framesnpictures/dto": "^0.5.7"
     },
     "require-dev": {
