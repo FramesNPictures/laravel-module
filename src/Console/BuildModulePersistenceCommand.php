@@ -31,11 +31,6 @@ class BuildModulePersistenceCommand extends Command
     protected $persistencePaths;
 
     /**
-     * @var string
-     */
-    protected $sourceFolder;
-
-    /**
      * Create a new command instance.
      *
      * @return void
@@ -46,16 +41,8 @@ class BuildModulePersistenceCommand extends Command
         $this->persistencePaths = new Collection();
     }
 
-    /**
-     * Execute the console command.
-     *
-     * @param ModuleService $repository
-     *
-     * @return mixed
-     */
     public function handle(ModuleService $repository)
     {
-        $this->sourceFolder = $this->option('src');
         $providers          = $repository->getModuleProviders();
 
         foreach ($providers as $provider)
