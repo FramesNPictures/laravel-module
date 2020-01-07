@@ -25,10 +25,14 @@ function {{ $definition->getModuleMethodName('load','vueData') }}() {
 function {{ $definition->getModuleMethodName('init','VueJS') }}(element) {
     window.Vue = require('vue');
 
-    return new Vue({
+    let v = new Vue({
         el: element,
         data: {{ $definition->getModuleMethodName('load','vueData') }}(),
     });
+
+    loadVueComponents(v);
+
+    return v;
 }
 
 function {{ $definition->getModuleMethodName('init','Axios') }}(csrfTokenMeta, authTokenMeta) {
