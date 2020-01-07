@@ -2,10 +2,9 @@
 
 namespace Fnp\Module\Console;
 
-use Cni\Utils\Dumper;
 use Fnp\Module\Definitions\FrontendModuleDefinition;
 use Fnp\Module\ModuleProvider;
-use Fnp\Module\Services\ServiceProviderRepository;
+use Fnp\Module\Services\ModuleService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\View;
@@ -41,11 +40,6 @@ class BuildModuleFrontendCommand extends Command
      */
     protected $modulePath;
 
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         parent::__construct();
@@ -54,12 +48,7 @@ class BuildModuleFrontendCommand extends Command
         $this->modulePath      = config('module.path', resource_path('module'));
     }
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
-    public function handle(ServiceProviderRepository $repository)
+    public function handle(ModuleService $repository)
     {
         $this->buildFolder();
 
