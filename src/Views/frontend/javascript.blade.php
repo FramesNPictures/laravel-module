@@ -30,7 +30,7 @@ function {{ $definition->getModuleMethodName('init','VueJS') }}(element) {
         data: {{ $definition->getModuleMethodName('load','vueData') }}(),
     });
 
-    loadVueComponents(v);
+    {{ $definition->getModuleMethodName('load','vueComponents') }}(v);
 
     return v;
 }
