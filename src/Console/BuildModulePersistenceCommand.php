@@ -16,7 +16,7 @@ class BuildModulePersistenceCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'build:module:persistence';
+    protected $signature = 'module:persistence';
 
     /**
      * The console command description.

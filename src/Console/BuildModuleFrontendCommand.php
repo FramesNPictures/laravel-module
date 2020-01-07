@@ -16,7 +16,7 @@ class BuildModuleFrontendCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'build:module:frontend';
+    protected $signature = 'module:frontend';
 
     /**
      * The console command description.
@@ -94,7 +94,6 @@ class BuildModuleFrontendCommand extends Command
         $this->build('javascript', 'js', $definition);
         $this->build('less', 'less', $definition);
         $this->build('sass', 'scss', $definition);
-        $this->build('helpers', 'js', $definition);
     }
 
     protected function build($name, $extension, FrontendModuleDefinition $definition)

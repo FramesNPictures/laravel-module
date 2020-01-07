@@ -17,8 +17,7 @@ class BuildModulePhpUnitCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'build:module:phpunit
-                            {--S|src= : Specify source folder}';
+    protected $signature = 'module:phpunit {--S|src= : Specify source folder}';
 
 
     protected $suites = [];
