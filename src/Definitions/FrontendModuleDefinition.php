@@ -86,6 +86,9 @@ class FrontendModuleDefinition
 
     public function addVueData($key, $value = NULL): FrontendModuleDefinition
     {
+        if (!$this->isVue())
+            $this->setVue('#app');
+
         $this->vueData[ $key ] = $value;
 
         return $this;
@@ -93,6 +96,9 @@ class FrontendModuleDefinition
 
     public function addVueComponent($name, $path): FrontendModuleDefinition
     {
+        if (!$this->isVue())
+            $this->setVue('#app');
+
         $this->vueComponents[ $name ] = $path;
 
         return $this;
@@ -236,6 +242,11 @@ class FrontendModuleDefinition
     public function getVue()
     {
         return $this->vue;
+    }
+
+    public function isVue()
+    {
+        return !is_null($this->vue);
     }
 
     /**
