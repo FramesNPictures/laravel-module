@@ -16,11 +16,6 @@ function vueData() {
 
 window.Vue = require('vue');
 
-let v = new Vue({
-    el: '{{ $definition->getVue() }}',
-    data: vueData(),
-});
-
 @if(count($definition->getVueComponents()))
 @foreach($definition->getVueComponents() as $key => $path)
 @if(strpos($path,'/') !== FALSE)
@@ -30,6 +25,11 @@ Vue.component('{{ $key }}', require('{{ $path }}').default);
 @endif
 @endforeach
 @endif
+
+let v = new Vue({
+    el: '{{ $definition->getVue() }}',
+    data: vueData(),
+});
 
 @endif
 
