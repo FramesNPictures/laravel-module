@@ -5,6 +5,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.axios.defaults.headers.common['Accept'] = 'application/json';
 
 @if($definition->isVue())
+
 function vueData() {
 @if(count($definition->getVueData()))
     return {!! json_encode($definition->getVueData(), JSON_PRETTY_PRINT) !!};
@@ -28,6 +29,8 @@ Vue.component('{{ $key }}', require('{{ $definition->relative($path) }}').defaul
 Vue.component('{{ $key }}', require('{{ $path }}').default);
 @endif
 @endforeach
+@endif
+
 @endif
 
 window.initAxios = function (csrfTokenMeta, authTokenMeta) {
