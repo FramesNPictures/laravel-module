@@ -10,6 +10,11 @@ class FrontendModuleDefinition
     protected $handle = 'app';
 
     /**
+     * @var string
+     */
+    protected $vue = NULL;
+
+    /**
      * @var array
      */
     protected $vueData = [];
@@ -47,6 +52,9 @@ class FrontendModuleDefinition
 
     public function merge(FrontendModuleDefinition $definition)
     {
+        if (!$this->getVue() && $definition->getVue())
+            $this->setVue($definition->getVue());
+
         foreach ($definition->getVueComponents() as $key => $value)
             $this->addVueComponent($key, $value);
 
@@ -220,5 +228,25 @@ class FrontendModuleDefinition
         $up  = str_repeat('../', count($up) - 1);
 
         return str_replace('//', '/', $up . $rel);
+    }
+
+    /**
+     * @return string
+     */
+    public function getVue()
+    {
+        return $this->vue;
+    }
+
+    /**
+     * @param string $vue
+     *
+     * @return FrontendModuleDefinition
+     */
+    public function setVue(string $element): FrontendModuleDefinition
+    {
+        $this->vue = $element;
+
+        return $this;
     }
 }

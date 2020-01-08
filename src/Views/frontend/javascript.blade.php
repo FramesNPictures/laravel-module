@@ -1,44 +1,36 @@
 // Javascript module for "{{ $definition->getHandle() }}"
 
-function {{ $definition->getModuleMethodName('load','vueComponents') }}(vue) {
-@if(count($definition->getVueComponents()))
-@foreach($definition->getVueComponents() as $key => $path)
-@if(strpos($path,'/') !== FALSE)
-    vue.component('{{ $key }}', require('{{ $definition->relative($path) }}').default);
-@else
-    vue.component('{{ $key }}', require('{{ $path }}').default);
-@endif
-@endforeach
-@else
-    // No Vue Components
-@endif
-}
+window.axios = require('axios');
+window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.defaults.headers.common['Accept'] = 'application/json';
 
-function {{ $definition->getModuleMethodName('load','vueData') }}() {
+@if($definition->isVue())
+function vueData() {
 @if(count($definition->getVueData()))
     return {!! json_encode($definition->getVueData(), JSON_PRETTY_PRINT) !!};
 @else
-    // No Vue Data
+    return {};
 @endif
 }
 
-function {{ $definition->getModuleMethodName('init','VueJS') }}(element) {
-    window.Vue = require('vue');
+window.Vue = require('vue');
 
-    let v = new Vue({
-        el: element,
-        data: {{ $definition->getModuleMethodName('load','vueData') }}(),
-    });
+let v = new Vue({
+    el: '{{ $definition->getVue() }}',
+    data: vueData(),
+});
 
-    {{ $definition->getModuleMethodName('load','vueComponents') }}(v);
+@if(count($definition->getVueComponents()))
+@foreach($definition->getVueComponents() as $key => $path)
+@if(strpos($path,'/') !== FALSE)
+Vue.component('{{ $key }}', require('{{ $definition->relative($path) }}').default);
+@else
+Vue.component('{{ $key }}', require('{{ $path }}').default);
+@endif
+@endforeach
+@endif
 
-    return v;
-}
-
-function {{ $definition->getModuleMethodName('init','Axios') }}(csrfTokenMeta, authTokenMeta) {
-    window.axios = require('axios');
-    window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-    window.axios.defaults.headers.common['Accept'] = 'application/json';
+window.initAxios = function (csrfTokenMeta, authTokenMeta) {
 
     if (csrfTokenMeta) {
         token = document.head.querySelector('meta[name="' + csrfTokenMeta + '"]');
@@ -59,17 +51,11 @@ function {{ $definition->getModuleMethodName('init','Axios') }}(csrfTokenMeta, a
     }
 }
 
-function {{ $definition->getModuleMethodName('load','javaScript') }}() {
 @if(count($definition->getJs()))
-    @foreach($definition->getJs() as $path)
-        require('{{ $definition->relative($path) }}');
-    @endforeach
-@else
-    // No Javascript Included
+@foreach($definition->getJs() as $path)
+require('{{ $definition->relative($path) }}');
+@endforeach
 @endif
-}
-
-{{ $definition->getModuleMethodName('load','javaScript') }}();
 
 
 
