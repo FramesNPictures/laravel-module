@@ -3,7 +3,7 @@
 namespace Fnp\Module\Console;
 
 use Fnp\Module\ModuleProvider;
-use Fnp\Module\Services\ServiceProviderRepository;
+use Fnp\Module\Services\ModuleService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Artisan;
@@ -16,8 +16,7 @@ class BuildModulePersistenceCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'build:module:persistence 
-                            {--S|src= : Specify writable source folder}';
+    protected $signature = 'module:persistence';
 
     /**
      * The console command description.
@@ -32,11 +31,6 @@ class BuildModulePersistenceCommand extends Command
     protected $persistencePaths;
 
     /**
-     * @var string
-     */
-    protected $sourceFolder;
-
-    /**
      * Create a new command instance.
      *
      * @return void
@@ -47,16 +41,8 @@ class BuildModulePersistenceCommand extends Command
         $this->persistencePaths = new Collection();
     }
 
-    /**
-     * Execute the console command.
-     *
-     * @param ServiceProviderRepository $repository
-     *
-     * @return mixed
-     */
-    public function handle(ServiceProviderRepository $repository)
+    public function handle(ModuleService $repository)
     {
-        $this->sourceFolder = $this->option('src');
         $providers          = $repository->getModuleProviders();
 
         foreach ($providers as $provider)
@@ -74,11 +60,13 @@ class BuildModulePersistenceCommand extends Command
             return;
 
         $folders = $provider->persistenceFolders();
+        $composer = json_decode(file_get_contents(base_path('composer.json')), TRUE);
+        $sources = array_values($composer['autoload']['psr-4']);
 
         foreach ($folders as $folder) {
             $relativeFolder = str_replace(base_path() . '/', '', $folder);
 
-            if ($this->sourceFolder && Str::startsWith($relativeFolder, $this->sourceFolder)) {
+            if (Str::startsWith($relativeFolder, $sources)) {
                 $cmd = 'ide-helper:models --write  --reset --dir="' . $relativeFolder . '"';
                 Artisan::call($cmd);
             } else {

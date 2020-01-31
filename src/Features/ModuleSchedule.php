@@ -11,9 +11,14 @@ trait ModuleSchedule
 {
     abstract public function schedule(Schedule $schedule);
 
-    public function bootModuleScheduleFeature(Schedule $schedule)
+    public function bootModuleScheduleFeature()
     {
-        if (App::runningInConsole())
+        if (!App::runningInConsole())
+            return;
+
+        $this->app->booted(function () {
+            $schedule = $this->app->make(Schedule::class);
             $this->schedule($schedule);
+        });
     }
 }

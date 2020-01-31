@@ -2,17 +2,17 @@
 
 namespace Fnp\Module\Definitions;
 
-use Illuminate\Support\Arr;
+use Fnp\Dto\Common\Helper\Obj;
 use Illuminate\Support\Facades\Config;
 
 class FrontendModuleDefinition
 {
-    protected $name = 'app';
+    protected $handle = 'app';
 
     /**
      * @var string
      */
-    protected $vueRootElement;
+    protected $vue = NULL;
 
     /**
      * @var array
@@ -49,41 +49,11 @@ class FrontendModuleDefinition
      */
     protected $images = [];
 
-    /**
-     * @var array
-     */
-    public $buildInfo = [];
-
-    public function getBuildInfo($key, $default = NULL)
-    {
-        return Arr::get($this->buildInfo, $key, $default);
-    }
-
-    public function addBuildInfo($key, $value = TRUE)
-    {
-        Arr::set($this->buildInfo, $key, $value);
-    }
-
-    public function useAxios()
-    {
-        $this->addBuildInfo('axios');
-        $this->addBuildInfo('js');
-
-        return $this;
-    }
-
-    public function useBootstrap()
-    {
-        $this->addBuildInfo('bootstrap');
-        $this->addBuildInfo('js');
-
-        return $this;
-    }
 
     public function merge(FrontendModuleDefinition $definition)
     {
-        if ($definition->getVueRootElement())
-            $this->setVueRootElement($definition->getVueRootElement());
+        if (!$this->getVue() && $definition->getVue())
+            $this->setVue($definition->getVue());
 
         foreach ($definition->getVueComponents() as $key => $value)
             $this->addVueComponent($key, $value);
@@ -107,27 +77,17 @@ class FrontendModuleDefinition
             $this->addVueData($key, $value);
     }
 
-    public function setName($name): FrontendModuleDefinition
+    public function setHandle($handle): FrontendModuleDefinition
     {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function setVueRootElement($element): FrontendModuleDefinition
-    {
-        $this->addBuildInfo('vue');
-        $this->addBuildInfo('js');
-
-        $this->vueRootElement = $element;
+        $this->handle = $handle;
 
         return $this;
     }
 
     public function addVueData($key, $value = NULL): FrontendModuleDefinition
     {
-        $this->addBuildInfo('vue-data');
-        $this->addBuildInfo('js');
+        if (!$this->isVue())
+            $this->setVue('#app');
 
         $this->vueData[ $key ] = $value;
 
@@ -136,8 +96,8 @@ class FrontendModuleDefinition
 
     public function addVueComponent($name, $path): FrontendModuleDefinition
     {
-        $this->addBuildInfo('components');
-        $this->addBuildInfo('js');
+        if (!$this->isVue())
+            $this->setVue('#app');
 
         $this->vueComponents[ $name ] = $path;
 
@@ -146,8 +106,6 @@ class FrontendModuleDefinition
 
     public function addJs($path): FrontendModuleDefinition
     {
-        $this->addBuildInfo('js');
-
         $this->js[] = $path;
 
         return $this;
@@ -155,8 +113,6 @@ class FrontendModuleDefinition
 
     public function addCss($path): FrontendModuleDefinition
     {
-        $this->addBuildInfo('css');
-
         $this->css[] = $path;
 
         return $this;
@@ -164,9 +120,6 @@ class FrontendModuleDefinition
 
     public function addSass($path): FrontendModuleDefinition
     {
-        $this->addBuildInfo('sass');
-        $this->addBuildInfo('css');
-
         $this->sass[] = $path;
 
         return $this;
@@ -174,8 +127,6 @@ class FrontendModuleDefinition
 
     public function addLess($path): FrontendModuleDefinition
     {
-        $this->addBuildInfo('less');
-
         $this->less[] = $path;
 
         return $this;
@@ -183,19 +134,9 @@ class FrontendModuleDefinition
 
     public function addImage($key, $path): FrontendModuleDefinition
     {
-        $this->addBuildInfo('images');
-
         $this->images[ $key ] = $path;
 
         return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getVueRootElement(): ?string
-    {
-        return $this->vueRootElement;
     }
 
     /**
@@ -219,9 +160,9 @@ class FrontendModuleDefinition
     /**
      * @return string
      */
-    public function getName(): ?string
+    public function getHandle(): ?string
     {
-        return $this->name;
+        return $this->handle;
     }
 
     /**
@@ -266,7 +207,12 @@ class FrontendModuleDefinition
 
     public function getModuleFileName($extension): string
     {
-        return $this->getName() . '.' . $extension;
+        return $this->getHandle() . '.' . $extension;
+    }
+
+    public function getModuleMethodName($prefix, $suffix): string
+    {
+        return Obj::methodName($prefix, $this->getHandle(), $suffix);
     }
 
     public function getTargetModuleFilePath($extension): string
@@ -288,5 +234,30 @@ class FrontendModuleDefinition
         $up  = str_repeat('../', count($up) - 1);
 
         return str_replace('//', '/', $up . $rel);
+    }
+
+    /**
+     * @return string
+     */
+    public function getVue()
+    {
+        return $this->vue;
+    }
+
+    public function isVue()
+    {
+        return !is_null($this->vue);
+    }
+
+    /**
+     * @param string $vue
+     *
+     * @return FrontendModuleDefinition
+     */
+    public function setVue(string $element): FrontendModuleDefinition
+    {
+        $this->vue = $element;
+
+        return $this;
     }
 }

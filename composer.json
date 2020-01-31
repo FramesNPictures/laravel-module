@@ -9,6 +9,10 @@
         }
     ],
     "require": {
+        "php": ">=7.1",
+        "framesnpictures/dto": "^0.5.7"
+    },
+    "require-dev": {
         "orchestra/testbench": "^3.8"
     },
     "autoload": {
@@ -19,7 +23,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "FNP\\Module\\ModuleInit"
+                "Fnp\\Module\\ModuleInit"
             ]
         }
     }
