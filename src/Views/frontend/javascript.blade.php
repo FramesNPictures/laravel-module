@@ -35,7 +35,21 @@ function vueData() {
 @endif
 }
 
-window.Vue = require('vue');
+let Vue = require('vue');
+
+window.Events = new class {
+    constructor() {
+        this.vue = new Vue();
+    }
+
+    fire(event, data = null) {
+        this.vue.$emit(event, data);
+    }
+
+    listen(event, callback) {
+        this.vue.$on(event, callback);
+    }
+};
 
 @if(count($definition->getVueComponents()))
 @foreach($definition->getVueComponents() as $key => $path)
@@ -51,6 +65,8 @@ let v = new Vue({
     el: '{{ $definition->getVue() }}',
     data: vueData(),
 });
+
+window.Vue = v;
 
 @endif
 
