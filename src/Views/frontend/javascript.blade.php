@@ -66,7 +66,7 @@ let v = new Vue({
     data: vueData(),
 });
 
-window.Vue = v;
+window.Vue = Vue;
 
 @endif
 
